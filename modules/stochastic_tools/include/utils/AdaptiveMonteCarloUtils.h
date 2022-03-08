@@ -10,6 +10,8 @@
 #pragma once
 
 #include "MooseUtils.h"
+// #include "Sampler.h" // Yifeng
+#include "ReporterInterface.h"
 
 namespace AdaptiveMonteCarloUtils
 {
@@ -77,5 +79,14 @@ Real computeMin(const std::vector<Real> & data);
  * @param the data vector
  */
 std::vector<Real> computeVectorABS(const std::vector<Real> & data);
+
+
+/**
+ * propose a new sample.
+ *
+ * @param the current sample
+ * @param the random seed
+ */
+Real proposeNewSample(const Real x, const Real rnd1, const Real rnd2);
 
 } // namespace AdaptiveMonteCarloUtils

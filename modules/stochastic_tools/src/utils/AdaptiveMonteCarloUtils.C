@@ -10,6 +10,7 @@
 #include "AdaptiveMonteCarloUtils.h"
 #include "IndirectSort.h"
 #include "libmesh/int_range.h"
+#include "Normal.h"
 
 /* AdaptiveMonteCarloUtils contains functions that are used across the Adaptive Monte
  Carlo set of algorithms.*/
@@ -91,4 +92,19 @@ computeVectorABS(const std::vector<Real> & data)
   return data_abs;
 }
 
-} // namespace AdaptiveMonteCarloUtils
+}
+
+// Modified by Yifeng
+Real proposeNewSample(const Real x, const Real rnd1, const Real rnd2)
+{
+  const Real x_new = Normal::quantile(rnd1, x, 1.0);
+  const Real acceptance_ratio = std::log(Normal::pdf(x_new, 0, 1)) -
+                                std::log(Normal::pdf(x, 0, 1));
+  const Real new_sample = acceptance_ratio > std::log(rnd2)
+                            ? x_new
+                            : x;
+  Real val = Normal::cdf(new_sample, 0, 1);
+  return val;
+}
+
+// namespace AdaptiveMonteCarloUtils
